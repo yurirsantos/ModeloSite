@@ -2,6 +2,7 @@ export function Button(props: any) {
   let className =
     'w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md md:py-4 md:text-lg md:px-10'
   let color = props.color
+
   if (color == 'white') {
     color = ' text-indigo-700 bg-indigo-100 hover:bg-indigo-200'
   }

@@ -39,7 +39,7 @@ export function Home() {
   return (
     <NavAndFooter>
       <SectionMain>
-        <div className="text-center">
+        <div className="text-center ">
           <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl mt-5">
             <span className="block xl:inline">Seu </span>
             <span className="block text-indigo-600 xl:inline">Nome</span>
@@ -52,7 +52,7 @@ export function Home() {
           </p>
           <div className="mt-5 sm:mt-8 sm:flex justify-center">
             <Button title="Inscreva-se" link="/Registration" color="purple" />
-            <Button title="Saiba Mais!" link="#" color="white" />
+            <Button title="Saiba Mais!" link="/Teste" color="white" />
           </div>
         </div>
 

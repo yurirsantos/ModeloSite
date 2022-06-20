@@ -1,10 +1,20 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import { FilePlus, House, PhoneCall, Wrench, Gauge } from 'phosphor-react'
+import {
+  FilePlus,
+  House,
+  PhoneCall,
+  Wrench,
+  Gauge,
+  Person,
+  Password
+} from 'phosphor-react'
+import Swal from 'sweetalert2'
+import { Button } from '../Buttons/Buttons'
 
-const itensMenu = [
+const itensMenuMobile = [
   {
     name: 'Home',
     href: '/Home',
@@ -35,6 +45,72 @@ function classNames(...classes: string[]) {
 }
 
 export function Navbar() {
+  const [login, setLogin] = useState(true)
+
+  async function SignUp() {
+    const email = await Swal.fire({
+      title: 'Informe seu  E-mail',
+      input: 'email',
+      inputLabel: 'Seu e-mail',
+      inputPlaceholder: 'seu@email.com'
+    })
+
+    const password = await Swal.fire({
+      title: 'Senha',
+      input: 'password',
+      inputLabel: 'Senha',
+      inputPlaceholder: 'Informe sua senha'
+    })
+
+    if (password) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: toast => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      Toast.fire({
+        icon: 'success',
+        title: 'Login com Sucesso!'
+      })
+
+      setLogin(false)
+    }
+  }
+
+  function SignIn() {
+    Swal.fire({
+      title: 'Realmente deseja sair do sistema?',
+      showDenyButton: true,
+      confirmButtonText: 'Sim',
+      denyButtonText: `Cancelar`
+    }).then(result => {
+      if (result.isConfirmed) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1000,
+          timerProgressBar: true,
+          didOpen: toast => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        Toast.fire({
+          icon: 'success',
+          title: 'Saiu com Sucesso!'
+        })
+        setLogin(true)
+      }
+    })
+  }
+
   return (
     <header>
       <Popover className="relative bg-gray-800">
@@ -137,7 +213,34 @@ export function Navbar() {
                 )}
               </Popover>
             </Popover.Group>
-            <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0"></div>
+            <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+              <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+                <a
+                  href="#"
+                  className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-100"
+                  onClick={SignIn}
+                >
+                  {login ? '' : 'Sair'}
+                </a>
+                {login ? (
+                  <a
+                    href="#"
+                    onClick={SignUp}
+                    className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                  >
+                    Login
+                  </a>
+                ) : (
+                  <div className="flex -space-x-1 overflow-hidden">
+                    <img
+                      className="inline-block h-12 w-12 rounded-full ml-10"
+                      src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      alt=""
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -172,8 +275,8 @@ export function Navbar() {
                   </div>
                 </div>
                 <div className="mt-6">
-                  <nav className="grid gap-y-8">
-                    {itensMenu.map(item => (
+                  <nav className="grid gap-y-8 mb-10">
+                    {itensMenuMobile.map(item => (
                       <a
                         key={item.name}
                         href={item.href}
@@ -189,6 +292,31 @@ export function Navbar() {
                       </a>
                     ))}
                   </nav>
+                  <div>
+                    {login ? (
+                      <span onClick={SignUp}>
+                        <Button title="Login" color="purple" />
+                      </span>
+                    ) : (
+                      <div className="flex -space-x-1 overflow-hidden">
+                        <img
+                          className="inline-block h-12 w-12 rounded-full ml-10"
+                          src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                          alt=""
+                        />
+                      </div>
+                    )}
+
+                    <p className="mt-6 text-center text-base font-medium text-gray-500">
+                      {login ? (
+                        ''
+                      ) : (
+                        <span onClick={SignIn}>
+                          <Button title="Sair" color="white" />
+                        </span>
+                      )}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
